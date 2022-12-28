@@ -4,10 +4,12 @@
  
 # Features
  
-設定時間に一回tweetします。  
-tweetの内容はカスタム可能ですが、デフォルトは以下のようになっています。  
+設定時間に一回ツイートします。  
+ツイートの内容はカスタム可能ですが、デフォルトは以下のようになっています。  
 
-![img](https://user-images.githubusercontent.com/103748137/209785890-f2722484-46a5-4a35-bfdf-07cba5db712d.png)
+![img](https://user-images.githubusercontent.com/103748137/209789009-31313ae6-3391-4633-ab79-d29011c05476.JPEG)
+
+設定したメッセージとその時のトレンドを含んだ文章が一定時間に一回ツイートされます。
  
  
 # Installation&Setup
@@ -41,6 +43,15 @@ python pip install tweepy
 ```
 python tweet.py
 ```
+
+停止  
+```
+ctrl + c
+```
+
+追記
+
+Pyinstallerを活用してEXEファイルを作成する場合は個人でお願いします。
  
 # Note
 
