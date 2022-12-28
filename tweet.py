@@ -9,7 +9,7 @@ import datetime
 # 日本のWOEID
 woeid = 23424856
 sentence = "OneTalkはワンタップでランダムな人と通話ができます！！\n一期一会の会話がここではできます！！\n嫌な人は簡単にブロック！！\nhttps://apps.apple.com/jp/app/onetalk/id1660444348"
-interval = 3600
+interval = 900
 
 CONSUMER_KEY = setting.CONSUMER_KEY
 CONSUMER_SECRET = setting.CONSUMER_SECRET
