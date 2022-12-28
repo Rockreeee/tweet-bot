@@ -16,6 +16,29 @@ CONSUMER_SECRET = setting.CONSUMER_SECRET
 ACCESS_TOKEN = setting.ACCESS_TOKEN
 ACCESS_TOKEN_SECRET = setting.ACCESS_TOKEN_SECRET
 
+
+print("----------------------TweetBot------------------------")
+print(" \|/        \|/       \|/      \|/      \|/      \|/  ")
+print("  |          |        \|/      \|/      \|/      \|/  ")
+print("  |   \/     |    //   |        |   \/   |/       |   ")
+print("□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□")
+print("□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□")
+print("□□□■■■■■■■□□□■□□■■□□■□□□■■■■■■□□□■■■■■■□□□■■■■■■■□□□□□")
+print("□□□□□□■□□□□□□■□□■■□□■□□□■□□□□□□□□■□□□□□□□□□□□■□□□□□□□□")
+print("□□□□□□■□□□□□□■□□■■□□■□□□■□□□□□□□□■□□□□□□□□□□□■□□□□□□□□")
+print("□□□□□□■□□□□□□■□□■■□□■□□□■□□□□□□□□■□□□□□□□□□□□■□□□□□□□□")
+print("□□□□□□■□□□□□□■□■□□■□■□□□■■■■■■□□□■■■■■■□□□□□□■□□□□□□□□")
+print("□□□□□□■□□□□□□■□■□□■□■□□□■□□□□□□□□■□□□□□□□□□□□■□□□□□□□□")
+print("□□□□□□■□□□□□□□■□□□□■□□□□■□□□□□□□□■□□□□□□□□□□□■□□□□□□□□")
+print("□□□□□□■□□□□□□□■□□□□■□□□□■□□□□□□□□■□□□□□□□□□□□■□□□□□□□□")
+print("□□□□□□■□□□□□□□■□□□□■□□□□■■■■■■□□□■■■■■■□□□□□□■□□□□□□□□")
+print("□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□")
+print("□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□")
+print(" \|/        \|/       \|/      \|/      \|/      \|/  ")
+print("  |          |        \|/      \|/      \|/      \|/  ")
+print("  |   \/     |    //   |        |   \/   |/       |   ")
+print("----------------------TweetBot------------------------")
+
 # Twitterオブジェクトの生成
 auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
 auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
@@ -28,8 +51,8 @@ beforeMessage = ''
 while True:
     # 現在時刻表示
     now = datetime.datetime.now() # 現在時刻の取得
-    today = now.strftime('%Y年%m月%d日') # 現在時刻を年月曜日で表示
-    print(today)
+    print('=======================')
+    print(now)
 
     # トレンド取得
     trends = api.get_place_trends(woeid)
@@ -43,9 +66,12 @@ while True:
     # message作成
     message = f'{sentence}\n#{resultDf[0]}\n#{resultDf[1]}\n#{resultDf[2]}\n#{resultDf[3]}\n#{resultDf[4]}\n#{resultDf[5]}'
     if beforeMessage != message:
-        client.create_tweet(text=message)
-        beforeMessage = message
-        print(f'ツイートしました。\n================={message}\n=================')
+        try:
+            client.create_tweet(text=message)
+            beforeMessage = message
+            print(f'ツイートしました。\n↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓\n{message}\n↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑\n=======================')
+        except tweepy.errors.Forbidden:
+            print('前回メッセージと同じなので今回はツイートできませんでした。')
     else:
         print('前回メッセージと同じなので今回はツイートしません。')
 
