@@ -2,14 +2,14 @@
  
 自作のアプリなどをtweeterで宣伝するためのBot
 
-<img src="https://user-images.githubusercontent.com/103748137/209794987-1981a63e-e6aa-4ebe-9e1a-0cf9ce60db25.JPEG" width="250">
+<img src="https://user-images.githubusercontent.com/103748137/209810729-6c7d124e-4894-4a62-b633-fe9539e154d0.JPEG" width="250">
  
 # Features
  
 設定時間に一回ツイートします。  
 ツイートの内容はカスタム可能ですが、デフォルトは以下のようになっています。  
 
-<img src="https://user-images.githubusercontent.com/103748137/209789009-31313ae6-3391-4633-ab79-d29011c05476.JPEG" width="500">
+<img src="https://user-images.githubusercontent.com/103748137/209810633-3350e324-e223-4ee4-88d2-48c7a11cc188.JPEG" width="500">
 
 設定したメッセージとその時のトレンドを含んだ文章が一定時間に一回ツイートされます。
  
