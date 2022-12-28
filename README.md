@@ -45,10 +45,21 @@ python pip install tweepy
 ```
 python tweet.py
 ```
-
 停止  
 ```
 ctrl + c
+```
+バックグラウンド実行
+```
+nohup python tweet.py　> log.txt &
+```
+バックグラウンドタスク確認
+```
+ps u
+```
+バックグラウンド停止
+```
+kill -KILL PID
 ```
 
 追記
