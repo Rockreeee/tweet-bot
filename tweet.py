@@ -1,10 +1,8 @@
-import random
 import tweepy
 import setting
 import pandas as pd
 import time
 import datetime
-import sys
 
 # custom parameter
 woeid = 23424856 # 日本のWOEID
@@ -62,7 +60,7 @@ while True:
     
     try:
         # message作成
-        message = f'{sentence}\n#{resultDf[0]}\n#{resultDf[1]}\n#{resultDf[2]}\n#{resultDf[3]}\n#{resultDf[4]}\n#{resultDf[5]}'
+        message = f'{sentence}\n#{resultDf[0]}\n#{resultDf[1]}\n#{resultDf[2]}\n#{resultDf[3]}\n#{resultDf[4]}\n#{resultDf[5]}\n#{resultDf[6]}'
         client.create_tweet(text=message)
         print(f'ツイートしました。\n↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓\n{message}\n↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑\n======================================================', flush=True)
     except tweepy.errors.Forbidden:
