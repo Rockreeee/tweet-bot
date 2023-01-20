@@ -1,6 +1,12 @@
 # TweetBot (宣伝用)
  
-自作のアプリなどをtweeterで宣伝するためのBot
+自作のアプリなどをtweeterで宣伝するためのBot。
+
+簡単にTwitter上で宣伝できます。
+
+1000viewなど簡単に得られるので、宣伝効果あります。
+
+同じツイートはしないように設定されています。
 
 <img src="https://user-images.githubusercontent.com/103748137/209810729-6c7d124e-4894-4a62-b633-fe9539e154d0.JPEG" width="250">
  
@@ -68,13 +74,15 @@ Pyinstallerを活用してEXEファイルを作成する場合は個人でお願
  
 # Note
 
-以下の４つを漏らさないこと
+- 以下の４つを漏らさないこと
 ```setting.py
 CONSUMER_KEY = '****'  
 CONSUMER_SECRET = '****'  
 ACCESS_TOKEN = '****'  
 ACCESS_TOKEN_SECRET = '****'  
 ```
+
+- 一時間に127ツイートが上限です。
  
 # License
 
