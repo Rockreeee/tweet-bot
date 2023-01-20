@@ -9,6 +9,7 @@ import datetime
 # custom parameter
 woeid = 23424856 # 日本のWOEID
 sentence = "OneTalkはランダムな人と通話ができます！！\n一期一会の会話ができます！！\n嫌な人は簡単にブロック！！\nhttps://apps.apple.com/jp/app/onetalk/id1660444348"
+sentenceLength = 76 # sentenceの文字数(URLは22文字になる)
 interval = 40
 
 beforeMessage = []
@@ -42,6 +43,8 @@ def main():
     print("  |   \/     |    //   |        |   \/   |/       |   ")
     print("----------------------TweetBot------------------------")
 
+    global dummyNumber
+
     # Twitterオブジェクトの生成
     auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
     auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
@@ -67,7 +70,7 @@ def main():
         try:
             # message作成
             message = tweet(resultDf, client)
-            # dummyNumber += 1
+            dummyNumber += 1
             print(f'ツイートしました。\n↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓\n{message}\n↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑\n======================================================', flush=True)
         
         except tweepy.errors.Forbidden:
@@ -82,7 +85,7 @@ def main():
 # ツイートする関数（トレンド配列, クライアント):
 def tweet(resultDf, client):
 
-    global dummyNumber, beforeMessage
+    global dummyNumber, beforeMessage, sentenceLength
     i = 0
 
     while True:
@@ -90,8 +93,8 @@ def tweet(resultDf, client):
             message = f'{sentence}'
         message +=  f'\n#{resultDf[i]}'
         i += 1
-        # 次ループで140文字を超えたら終了
-        if len(message) + len(f'\n#{resultDf[i]}') > 140:
+        # 次ループで140文字を超えたら終了(URLは22文字になる)
+        if (len(message) - len(sentence)) + sentenceLength + len(f'\n#{resultDf[i]}') > 140:
             break
 
     # 前回メッセージと被っていないか
@@ -110,7 +113,7 @@ def tweet(resultDf, client):
         beforeMessage.append(message)
         client.create_tweet(text=message)
         
-    print("beforeMessage = ", beforeMessage)
+    # print("beforeMessage = ", beforeMessage)
 
     return message
 
