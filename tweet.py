@@ -86,7 +86,26 @@ def main():
         
         time.sleep(interval)
 
-# ツイートする関数（トレンド配列, クライアント):
+# デフォルトの文章の文字数カウント
+def countLengthOfSentence():
+
+    splitedSentence = re.split(r'(?=http)|(\n)', sentence)
+    # print(splitedSentence)
+
+    # httpを取り除いた分の長さ
+    result = ""
+    httpCount = 0
+    for string in splitedSentence:
+        if string == None:
+            continue
+        if ("http" in string) == False:
+            result += string
+        else:
+            httpCount += 1
+
+    return len(result) + 22 * httpCount
+
+# ツイートする文章作成（トレンド配列, クライアント):
 def makeSentence(resultDf):
 
     global dummyNumber, beforeMessage
@@ -120,27 +139,9 @@ def makeSentence(resultDf):
             dummyNumber += 1
         beforeMessage.append(message)
         
-    print("beforeMessage = ", beforeMessage)
+    # print("beforeMessage = ", beforeMessage)
 
     return message
-
-def countLengthOfSentence():
-
-    splitedSentence = re.split(r'(?=http)|(\n)', sentence)
-    print(splitedSentence)
-
-    # httpを取り除いた分の長さ
-    result = ""
-    httpCount = 0
-    for string in splitedSentence:
-        if string == None:
-            continue
-        if ("http" in string) == False:
-            result += string
-        else:
-            httpCount += 1
-
-    return len(result) + 22 * httpCount
 
 if __name__ == "__main__":
     main()
