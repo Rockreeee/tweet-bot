@@ -5,15 +5,16 @@ import setting
 import pandas as pd
 import time
 import datetime
+import re
 
 # custom parameter
 woeid = 23424856 # 日本のWOEID
-sentence = "OneTalkはランダムな人と通話ができます！！\n一期一会の会話ができます！！\n嫌な人は簡単にブロック！！\nhttps://apps.apple.com/jp/app/onetalk/id1660444348"
-sentenceLength = 76 # sentenceの文字数(URLは22文字になる)
+sentence = "OneTalkはランダムな人と通話ができます!!\n一期一会の会話ができます!!\n嫌な人は簡単にブロック!!\nhttps://apps.apple.com/jp/app/onetalk/id1660444348"# 54 + 22
 interval = 40
 
 beforeMessage = []
 dummyNumber = 0
+sentenceLength = 0
 
 CONSUMER_KEY = setting.CONSUMER_KEY
 CONSUMER_SECRET = setting.CONSUMER_SECRET
@@ -43,7 +44,7 @@ def main():
     print("  |   \/     |    //   |        |   \/   |/       |   ")
     print("----------------------TweetBot------------------------")
 
-    global dummyNumber
+    global dummyNumber, sentenceLength
 
     # Twitterオブジェクトの生成
     auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
@@ -51,6 +52,9 @@ def main():
     api = tweepy.API(auth)
 
     client = tweepy.Client(consumer_key=CONSUMER_KEY, consumer_secret=CONSUMER_SECRET, access_token=ACCESS_TOKEN, access_token_secret=ACCESS_TOKEN_SECRET)
+
+    sentenceLength = countLengthOfSentence()
+    print("sentenceの長さは", sentenceLength)
 
     while True:
         # 現在時刻表示
@@ -69,8 +73,8 @@ def main():
         
         try:
             # message作成
-            message = tweet(resultDf, client)
-            dummyNumber += 1
+            message = makeSentence(resultDf)
+            client.create_tweet(text=message)
             print(f'ツイートしました。\n↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓\n{message}\n↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑\n======================================================', flush=True)
         
         except tweepy.errors.Forbidden:
@@ -83,9 +87,9 @@ def main():
         time.sleep(interval)
 
 # ツイートする関数（トレンド配列, クライアント):
-def tweet(resultDf, client):
+def makeSentence(resultDf):
 
-    global dummyNumber, beforeMessage, sentenceLength
+    global dummyNumber, beforeMessage
     i = 0
 
     while True:
@@ -94,14 +98,18 @@ def tweet(resultDf, client):
         message +=  f'\n#{resultDf[i]}'
         i += 1
         # 次ループで140文字を超えたら終了(URLは22文字になる)
-        if (len(message) - len(sentence)) + sentenceLength + len(f'\n#{resultDf[i]}') > 140:
+        if sentenceLength + (len(message) - len(sentence)) + len(f'\n#{resultDf[i]}') > 140:
             break
+
+    # beforeMessageが増えすぎないように(最大保持数99)
+    if len(beforeMessage) == 99:
+        del beforeMessage[0]
 
     # 前回メッセージと被っていないか
     if (message in beforeMessage) == False:
         beforeMessage.append(message)
-        client.create_tweet(text=message)
     else:
+        # dummyNumberが増えすぎないように
         if dummyNumber == 99:
             dummyNumber = 0
         if len(message) <= 138:
@@ -111,11 +119,28 @@ def tweet(resultDf, client):
             message = message[0:-2] + f'\n{dummyNumber}'
             dummyNumber += 1
         beforeMessage.append(message)
-        client.create_tweet(text=message)
         
-    # print("beforeMessage = ", beforeMessage)
+    print("beforeMessage = ", beforeMessage)
 
     return message
+
+def countLengthOfSentence():
+
+    splitedSentence = re.split(r'(?=http)|(\n)', sentence)
+    print(splitedSentence)
+
+    # httpを取り除いた分の長さ
+    result = ""
+    httpCount = 0
+    for string in splitedSentence:
+        if string == None:
+            continue
+        if ("http" in string) == False:
+            result += string
+        else:
+            httpCount += 1
+
+    return len(result) + 22 * httpCount
 
 if __name__ == "__main__":
     main()
