@@ -129,7 +129,7 @@ def makeSentence(resultDf):
         beforeMessage.append(message)
     else:
         # dummyNumberが増えすぎないように
-        if dummyNumber == 99:
+        if dummyNumber == 100:
             dummyNumber = 0
         if len(message) <= 138:
             message += f'\n{dummyNumber}'
