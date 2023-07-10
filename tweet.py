@@ -6,11 +6,22 @@ import pandas as pd
 import time
 import datetime
 import re
+import random
 
 # custom parameter
 woeid = 23424856 # 日本のWOEID
-sentence = "OneTalkはランダムな人と通話ができます!!\n一期一会の会話ができます!!\n嫌な人は簡単にブロック!!\nhttps://apps.apple.com/jp/app/onetalk/id1660444348"# 54 + 22
-interval = 40
+sentenceList = [
+    # ["OneTalkでランダム通話しよ～!!\n寝落ち、暇つぶしに!!\nビデオ通話なしで安心\nhttps://apps.apple.com/jp/app/onetalk/id1660444348\n#koemo\n#コエモ\n#オルカ\n#ロンリー\n#Maum", ["./assets/images/onetalk1.jpg", "./assets/images/onetalk2.jpg", "./assets/images/onetalk3.jpg"]],
+    # ["「OneTalk」でランダムな人と通話しよ!!\n寝落ち、いろんな相談、暇つぶしに!\nビデオ通話はできないから安心!\nhttps://apps.apple.com/jp/app/onetalk/id1660444348", ["./assets/images/onetalk1.jpg", "./assets/images/onetalk2.jpg", "./assets/images/onetalk3.jpg"]],
+    # ["「OneTalk」で通話しよ!!\n通話相手は「完全ランダム」!\n寝落ち、いろんな相談、暇つぶしに!\nビデオ通話はできないから安心!\nhttps://apps.apple.com/jp/app/onetalk/id1660444348", ["./assets/images/onetalk1.jpg", "./assets/images/onetalk2.jpg", "./assets/images/onetalk3.jpg"]],
+    # ["「OneTalk」で一期一会の会話しよ!!\nランダムで通話する楽しさ!\n寝落ち通話、暇つぶし通話など!!\nhttps://apps.apple.com/jp/app/onetalk/id1660444348", ["./assets/images/onetalk1.jpg", "./assets/images/onetalk2.jpg", "./assets/images/onetalk3.jpg"]],
+    ["/\n「OneTalk」でランダムな人と通話。\n\ \n相談、眠れない、心の寂しさを埋めます。\n登録不要で通話し放題。\n「OneTalk」は心の拠り所になります。\n\n\nhttps://apps.apple.com/jp/app/onetalk/id1660444348\n\n", ["./assets/images/onetalk4.jpg", "./assets/images/onetalk5.jpg", "./assets/images/onetalk6.jpg", "./assets/images/onetalk7.jpg"]],
+    # ["「LibertyMCバトル」でラップバトル&サイファー!!\n60種類を超えるビート!\nオンラインでマッチした相手とMCバトル!!\nhttps://rockreeee.github.io/LibertyMCBattle-web-page/", ["./assets/images/liberty1.png", "./assets/images/liberty2.png", "./assets/images/liberty3.png", "./assets/images/liberty4.png"]],
+    ["/\n「インチキルーレット」で確率は思いのまま!!\n\ \nルーレットで当たるものを操作できる!?\n当てたい項目を100%当てろ!!\n\n\nhttps://apps.apple.com/jp/app/%E3%82%A4%E3%83%B3%E3%83%81%E3%82%AD%E3%83%AB%E3%83%BC%E3%83%AC%E3%83%83%E3%83%88/id1666018138\n\n", ["./assets/images/roulette1.jpg", "./assets/images/roulette2.jpg", "./assets/images/roulette3.jpg"]],
+    ["/\n「早押しクイズで暗記」で楽しく暗記!!\n\ \n単語帳はもう買わなくていい!\nみんなで単語帳を作ろう♪\n資格勉強、暗記に最適('ω')\n\n\nhttps://rockreeee.github.io/MemorizationByQuiz-web-page/\n\n", ["./assets/images/study1.jpg", "./assets/images/study2.jpg", "./assets/images/study3.jpg", "./assets/images/study4.jpg"]]
+]
+randomSentence = ""
+interval = 288
 
 beforeMessage = []
 dummyNumber = 0
@@ -44,7 +55,7 @@ def main():
     print("  |   \/     |    //   |        |   \/   |/       |   ")
     print("----------------------TweetBot------------------------")
 
-    global dummyNumber, sentenceLength
+    global dummyNumber, sentenceLength, randomSentence
 
     # Twitterオブジェクトの生成
     auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
@@ -53,14 +64,31 @@ def main():
 
     client = tweepy.Client(consumer_key=CONSUMER_KEY, consumer_secret=CONSUMER_SECRET, access_token=ACCESS_TOKEN, access_token_secret=ACCESS_TOKEN_SECRET)
 
-    sentenceLength = countLengthOfSentence()
-    print("sentenceの長さは", sentenceLength)
+    # 画像をアップロード
+    mediaIdList = []
+    for images in sentenceList:
+        tempList = []
+        for image in images[1]:
+            filename = image
+            media = api.media_upload(filename)
+            tempList.append(media.media_id)
+
+        mediaIdList.append(tempList)
 
     while True:
         # 現在時刻表示
         now = datetime.datetime.now() # 現在時刻の取得
         print('======================================================')
         print(now)
+        
+        # 文章と画像決定
+        randomNum = random.randrange(0, len(sentenceList))
+        randomSentence = sentenceList[randomNum][0]
+        randomMediaIdList = mediaIdList[randomNum]
+        
+        # 文章の長さ取得
+        sentenceLength = countLengthOfSentence(randomSentence)
+        print("sentenceの長さは", sentenceLength)
 
         # トレンド取得
         trends = api.get_place_trends(woeid)
@@ -70,16 +98,35 @@ def main():
         # #タグ消す処理
         for item in df:
             resultDf.append(item.replace("#", ''))
+
+        # message作成
+        message = makeSentence(resultDf, randomSentence)
         
         try:
-            # message作成
-            message = makeSentence(resultDf)
-            client.create_tweet(text=message)
+            # ツイートを投稿する
+            tweet = api.update_status(status=message, media_ids=randomMediaIdList)
+            # client.create_tweet(text=message, media_ids=[media.media_key])
             print(f'ツイートしました。\n↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓\n{message}\n↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑\n======================================================', flush=True)
         
         except tweepy.errors.Forbidden:
             print('前回メッセージと同じなので今回はツイートできませんでした。', flush=True)
 
+        except tweepy.errors.TwitterServerError:
+            print('サーバーエラーです。0', flush=True)
+            time.sleep(60)
+
+        except requests.exceptions.ConnectionError:
+            print('サーバーエラーです。1', flush=True)
+            time.sleep(60)
+
+        except tweepy.errors.TooManyRequests:
+            print('サーバーエラーです。2', flush=True)
+            time.sleep(60)
+            
+        except tweepy.errors.TweepyException:
+            print('サーバーエラーです。3', flush=True)
+            time.sleep(120)
+            
         # 呼ばれないはず
         # except tweepy.errors.BadRequest:
         #     print('メッセージが長すぎて今回はツイートできませんでした。', flush=True)
@@ -87,7 +134,7 @@ def main():
         time.sleep(interval)
 
 # デフォルトの文章の文字数カウント
-def countLengthOfSentence():
+def countLengthOfSentence(sentence):
 
     splitedSentence = re.split(r'(?=http)|(\n)', sentence)
     # print(splitedSentence)
@@ -105,8 +152,8 @@ def countLengthOfSentence():
 
     return len(result) + 22 * httpCount
 
-# ツイートする文章作成（トレンド配列, クライアント):
-def makeSentence(resultDf):
+# ツイートする文章作成（トレンド配列, message):
+def makeSentence(resultDf, sentence):
 
     global dummyNumber, beforeMessage
     i = 0
