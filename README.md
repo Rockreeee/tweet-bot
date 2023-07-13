@@ -1,5 +1,15 @@
 #  宣伝TweetBot
  
+<<<<<<< HEAD
+=======
+自作のアプリなどをtweeterで宣伝するためのBot。
+
+簡単にTwitter上で宣伝できます。
+
+1000viewなど簡単に得られるので、宣伝効果あります。
+
+同じツイートはしないように設定されています。
+>>>>>>> 7e3e0c45ca1fe6cab4907d0774a13e9e2d6e66af
 
 <img src="https://user-images.githubusercontent.com/103748137/209810729-6c7d124e-4894-4a62-b633-fe9539e154d0.JPEG" width="250">
  
@@ -77,9 +87,13 @@ ACCESS_TOKEN = '****'
 ACCESS_TOKEN_SECRET = '****'  
 ```
 
+<<<<<<< HEAD
 - 使用は自己責任でお願いします
 
 - Twitterの規約変更により一日のAPIの呼び出しが600?程に制限されました。そのため、ツイート頻度に注意。
+=======
+- 一時間に127ツイートが上限です。
+>>>>>>> 7e3e0c45ca1fe6cab4907d0774a13e9e2d6e66af
  
 # License
 
