@@ -19,7 +19,7 @@ sentenceList = [
     # ["「LibertyMCバトル」でラップバトル&サイファー!!\n60種類を超えるビート!\nオンラインでマッチした相手とMCバトル!!\nhttps://rockreeee.github.io/LibertyMCBattle-web-page/", ["./assets/images/liberty1.png", "./assets/images/liberty2.png", "./assets/images/liberty3.png", "./assets/images/liberty4.png"]],
     ["/\n「インチキルーレット」で確率は思いのまま!!\n\ \nルーレットで当たるものを操作できる!?\n当てたい項目を100%当てろ!!\n\n\nhttps://apps.apple.com/jp/app/%E3%82%A4%E3%83%B3%E3%83%81%E3%82%AD%E3%83%AB%E3%83%BC%E3%83%AC%E3%83%83%E3%83%88/id1666018138\n\n", ["./assets/images/roulette1.jpg", "./assets/images/roulette2.jpg", "./assets/images/roulette3.jpg"]],
     ["/\n「早押しクイズで暗記」で楽しく暗記!!\n\ \n単語帳はもう買わなくていい!\nみんなで単語帳を作ろう♪\n資格勉強、暗記に最適('ω')\n\n\nhttps://rockreeee.github.io/MemorizationByQuiz-web-page/\n\n", ["./assets/images/study1.jpg", "./assets/images/study2.jpg", "./assets/images/study3.jpg", "./assets/images/study4.jpg"]]
-    ["/\n1000円からスタートできる為替取引\n\ \nチャートが上がるか下がるか予測するだけの簡単取引！完全無料のクイックデモで今人気の為替取引を体験できます\n\n\nhttps://t.co/DSIl3Yj0Ru\n\n", ["./assets/images/ask_001.jpg", "./assets/images/ask_002.jpg", "./assets/images/ask_003.jpg"]]
+    ["/\n1000円からスタートできる為替取引\n\ \nチャートが上がるか下がるか予測するだけの簡単取引！完全無料のクイックデモで今人気の為替取引を体験できます\n\n\nhttps://onl.bz/BRQ1VHP\n\n", ["./assets/images/ask_001.jpg", "./assets/images/ask_002.jpg", "./assets/images/ask_003.jpg"]]
 ]
 randomSentence = ""
 interval = 288
