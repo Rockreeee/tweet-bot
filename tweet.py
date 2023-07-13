@@ -8,8 +8,11 @@ import datetime
 import re
 import random
 
-# custom parameter
-woeid = 23424856 # 日本のWOEID
+
+# カスタムパラメーター＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+# 日本のWOEID
+woeid = 23424856 
+# 投稿する文章のリスト
 sentenceList = [
     # ["OneTalkでランダム通話しよ～!!\n寝落ち、暇つぶしに!!\nビデオ通話なしで安心\nhttps://apps.apple.com/jp/app/onetalk/id1660444348\n#koemo\n#コエモ\n#オルカ\n#ロンリー\n#Maum", ["./assets/images/onetalk1.jpg", "./assets/images/onetalk2.jpg", "./assets/images/onetalk3.jpg"]],
     # ["「OneTalk」でランダムな人と通話しよ!!\n寝落ち、いろんな相談、暇つぶしに!\nビデオ通話はできないから安心!\nhttps://apps.apple.com/jp/app/onetalk/id1660444348", ["./assets/images/onetalk1.jpg", "./assets/images/onetalk2.jpg", "./assets/images/onetalk3.jpg"]],
@@ -19,12 +22,21 @@ sentenceList = [
     # ["「LibertyMCバトル」でラップバトル&サイファー!!\n60種類を超えるビート!\nオンラインでマッチした相手とMCバトル!!\nhttps://rockreeee.github.io/LibertyMCBattle-web-page/", ["./assets/images/liberty1.png", "./assets/images/liberty2.png", "./assets/images/liberty3.png", "./assets/images/liberty4.png"]],
     ["/\n「インチキルーレット」で確率は思いのまま!!\n\ \nルーレットで当たるものを操作できる!?\n当てたい項目を100%当てろ!!\n\n\nhttps://apps.apple.com/jp/app/%E3%82%A4%E3%83%B3%E3%83%81%E3%82%AD%E3%83%AB%E3%83%BC%E3%83%AC%E3%83%83%E3%83%88/id1666018138\n\n", ["./assets/images/roulette1.jpg", "./assets/images/roulette2.jpg", "./assets/images/roulette3.jpg"]],
     ["/\n「早押しクイズで暗記」で楽しく暗記!!\n\ \n単語帳はもう買わなくていい!\nみんなで単語帳を作ろう♪\n資格勉強、暗記に最適('ω')\n\n\nhttps://rockreeee.github.io/MemorizationByQuiz-web-page/\n\n", ["./assets/images/study1.jpg", "./assets/images/study2.jpg", "./assets/images/study3.jpg", "./assets/images/study4.jpg"]]
+    ["/\n1000円からスタートできる為替取引\n\ \nチャートが上がるか下がるか予測するだけの簡単取引！完全無料のクイックデモで今人気の為替取引を体験できます\n\n\nhttps://onl.bz/BRQ1VHP\n\n", ["./assets/images/ask_001.jpg", "./assets/images/ask_002.jpg", "./assets/images/ask_003.jpg"]]
 ]
-randomSentence = ""
+# 投稿間隔
 interval = 288
+# カスタムパラメーター＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 
+
+
+# 投稿する文章
+randomSentence = ""
+# 前回送信したメッセージ
 beforeMessage = []
+# 前回の文章と同じにならないように毎回数字をつける
 dummyNumber = 0
+# 文章の長さ計測
 sentenceLength = 0
 
 CONSUMER_KEY = setting.CONSUMER_KEY
@@ -33,27 +45,23 @@ ACCESS_TOKEN = setting.ACCESS_TOKEN
 ACCESS_TOKEN_SECRET = setting.ACCESS_TOKEN_SECRET
 
 def main():
-    print("----------------------TweetBot------------------------")
-    print(" \|/        \|/       \|/      \|/      \|/      \|/  ")
-    print("  |          |        \|/      \|/      \|/      \|/  ")
-    print("  |   \/     |    //   |        |   \/   |/       |   ")
-    print("□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□")
-    print("□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□")
-    print("□□□■■■■■■■□□□■□□■■□□■□□□■■■■■■□□□■■■■■■□□□■■■■■■■□□□□□")
-    print("□□□□□□■□□□□□□■□□■■□□■□□□■□□□□□□□□■□□□□□□□□□□□■□□□□□□□□")
-    print("□□□□□□■□□□□□□■□□■■□□■□□□■□□□□□□□□■□□□□□□□□□□□■□□□□□□□□")
-    print("□□□□□□■□□□□□□■□□■■□□■□□□■□□□□□□□□■□□□□□□□□□□□■□□□□□□□□")
-    print("□□□□□□■□□□□□□■□■□□■□■□□□■■■■■■□□□■■■■■■□□□□□□■□□□□□□□□")
-    print("□□□□□□■□□□□□□■□■□□■□■□□□■□□□□□□□□■□□□□□□□□□□□■□□□□□□□□")
-    print("□□□□□□■□□□□□□□■□□□□■□□□□■□□□□□□□□■□□□□□□□□□□□■□□□□□□□□")
-    print("□□□□□□■□□□□□□□■□□□□■□□□□■□□□□□□□□■□□□□□□□□□□□■□□□□□□□□")
-    print("□□□□□□■□□□□□□□■□□□□■□□□□■■■■■■□□□■■■■■■□□□□□□■□□□□□□□□")
-    print("□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□")
-    print("□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□")
-    print(" \|/        \|/       \|/      \|/      \|/      \|/  ")
-    print("  |          |        \|/      \|/      \|/      \|/  ")
-    print("  |   \/     |    //   |        |   \/   |/       |   ")
-    print("----------------------TweetBot------------------------")
+    print("-------------------------------TweetBot--------------------------------")
+    print("  \|/        \|/       \|/       \|/       \|/      \|/        \|/     ")
+    print("   |          |        \|/       \|/       \|/      \|/        \|/     ")
+    print("   |   \/     |    //   |         |    \/   |/       |         \|/     ")
+    print("□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□")
+    print("□■■■■■■■□□■□□■■□□■□□■■■■■■□□■■■■■■□□■■■■■■■□□■■■■■□□□□□■■■□□□□■■■■■■■□□")
+    print("□□□□■□□□□□■□□■■□□■□□■□□□□□□□■□□□□□□□□□□■□□□□□■□□□□■□□□■□□□■□□□□□□■□□□□□")
+    print("□□□□■□□□□□■□□■■□□■□□■□□□□□□□■□□□□□□□□□□■□□□□□■□□□□■□□■□□□□□■□□□□□■□□□□□")
+    print("□□□□■□□□□□■□■□□■□■□□■■■■■■□□■■■■■■□□□□□■□□□□□■■■■□□□□■□□□□□■□□□□□■□□□□□")
+    print("□□□□■□□□□□■□■□□■□■□□■□□□□□□□■□□□□□□□□□□■□□□□□■□□□□■□□■□□□□□■□□□□□■□□□□□")
+    print("□□□□■□□□□□□■□□□□■□□□■□□□□□□□■□□□□□□□□□□■□□□□□■□□□□■□□□■□□□■□□□□□□■□□□□□")
+    print("□□□□■□□□□□□■□□□□■□□□■■■■■■□□■■■■■■□□□□□■□□□□□■■■■■□□□□□■■■□□□□□□□■□□□□□")
+    print("□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□")
+    print("  \|/        \|/       \|/       \|/       \|/      \|/        \|/     ")
+    print("   |          |        \|/       \|/       \|/      \|/        \|/     ")
+    print("   |   \/     |    //   |         |    \/   |/       |         \|/     ")
+    print("-------------------------------TweetBot--------------------------------")
 
     global dummyNumber, sentenceLength, randomSentence
 
@@ -133,6 +141,7 @@ def main():
         
         time.sleep(interval)
 
+
 # デフォルトの文章の文字数カウント
 def countLengthOfSentence(sentence):
 
@@ -151,6 +160,7 @@ def countLengthOfSentence(sentence):
             httpCount += 1
 
     return len(result) + 22 * httpCount
+
 
 # ツイートする文章作成（トレンド配列, message):
 def makeSentence(resultDf, sentence):
@@ -189,6 +199,7 @@ def makeSentence(resultDf, sentence):
     # print("beforeMessage = ", beforeMessage)
 
     return message
+
 
 if __name__ == "__main__":
     main()
