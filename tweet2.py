@@ -15,7 +15,7 @@ from selenium.common.exceptions import TimeoutException
 import os
 
 
-# カスタムパラメーター＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+# カスタムパラメーター===================================
 # 日本のWOEID
 woeid = 23424856 
 # 投稿する文章のリスト
@@ -27,9 +27,12 @@ sentenceList = [
 ]
 # 投稿間隔
 interval = 288
-# ==================＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+# Chrome Driverのパスを指定
+chrome_driver_path = "D:\\application\\ChromeDriver\\chromedriver.exe"
+# ======================================================
 
 
+# Chrome Driver
 driver = webdriver.Chrome()
 # 投稿する文章
 randomSentence = ""
@@ -84,14 +87,15 @@ def main():
 
         mediaIdList.append(tempList)
 
+    # Chrome Driver 起動
+    start_chrome_driver()
+
+
     while True:
         # 現在時刻表示
         now = datetime.datetime.now() # 現在時刻の取得
         print('======================================================')
         print(now)
-
-        # 起動
-        start_chrome_driver()
 
         # トレンド取得
         trends = get_trends()
@@ -208,8 +212,10 @@ def get_trends():
 
     url = "https://twitter.com/explore/tabs/trending"
 
+    # ページが開くまで待つ最大時間
     wait_time = 30
 
+    # ページを開く
     driver.get(url)
     
     # ページが開くまで待機
@@ -244,8 +250,6 @@ def get_trends():
 
 
 def start_chrome_driver():
-    # Chrome Driverのパスを指定
-    chrome_driver_path = "D:\\application\\ChromeDriver\\chromedriver.exe"
 
     # 環境変数にChrome Driverのパスを設定
     os.environ["webdriver.chrome.driver"] = chrome_driver_path

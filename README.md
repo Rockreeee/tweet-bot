@@ -98,6 +98,21 @@ seleniumのインストール
 ```
 pip install selenium 
 ```
+ 
+Chromeのインストール
+
+https://www.google.com/intl/ja/chrome/gsem/download/
+
+
+Chrome Driverのインストール
+
+https://chromedriver.chromium.org/downloads
+
+Chrome Driverの配置場所のパスを指定
+```tweet2.py
+chrome_driver_path = ""
+```
+
 
 実行
  
