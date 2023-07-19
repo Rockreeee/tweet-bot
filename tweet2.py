@@ -152,7 +152,6 @@ def main():
 def count_length_of_sentence(sentence):
 
     splitedSentence = re.split(r'(?=http)|(\n)', sentence)
-    # print(splitedSentence)
 
     # httpを取り除いた分の長さ
     result = ""
@@ -237,6 +236,13 @@ def get_trends():
         elements_list.append(element.text)
         
     # データ成型
+    # 最初によくわからないものが入っているためそれを削除
+    search_string = "For you"
+    index = elements_list.index(str(search_string))
+    del elements_list[:index]
+
+    print(elements_list)
+
     # トレンド1位から10位まで取得
     trends = []
     for i in range(9):
@@ -244,7 +250,7 @@ def get_trends():
         index = elements_list.index(str(search_string))
         trends.append(elements_list[index + 6])
 
-    print(trends)
+    # print(trends)
 
     return trends
 
