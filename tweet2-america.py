@@ -1,6 +1,6 @@
 # http://westplain.sakuraweb.com/translate/twitter/API-Overview/Error-Codes-and-Responses.cgi
 
-# NextBuzzzz
+# ngahyahi3@gmail.com
 
 import tweepy
 import setting
@@ -18,15 +18,10 @@ import os
 
 
 # カスタムパラメーター===================================
-# 日本のWOEID
-woeid = 23424856 
 # 投稿する文章のリスト
 sentenceList = [
-    ["/\n「OneTalk」でランダムな人と通話。\n\ \n相談、眠れない、心の寂しさを埋めます。\n登録不要で通話し放題。\n\nios->\nhttps://apps.apple.com/jp/app/onetalk/id1660444348\nandroid->\nhttps://play.google.com/store/apps/details?id=com.gmail.mmakt122.onetalk\n\n", ["./assets/images/onetalk4.jpg", "./assets/images/onetalk5.jpg", "./assets/images/onetalk6.jpg", "./assets/images/onetalk7.jpg"]],
-    # ["/\n「インチキルーレット」で確率は思いのまま!!\n\ \nルーレットで当たるものを操作できる!?\n当てたい項目を100%当てろ!!\n\n\nhttps://apps.apple.com/jp/app/%E3%82%A4%E3%83%B3%E3%83%81%E3%82%AD%E3%83%AB%E3%83%BC%E3%83%AC%E3%83%83%E3%83%88/id1666018138\n\n", ["./assets/images/roulette1.jpg", "./assets/images/roulette2.jpg", "./assets/images/roulette3.jpg"]],
-    # ["/\n「早押しクイズで暗記」で楽しく暗記!!\n\ \n単語帳はもう買わなくていい!\nみんなで単語帳を作ろう♪\n資格勉強、暗記に最適('ω')\n\n\nhttps://rockreeee.github.io/MemorizationByQuiz-web-page/\n\n", ["./assets/images/study1.jpg", "./assets/images/study2.jpg", "./assets/images/study3.jpg", "./assets/images/study4.jpg"]],
-    # ["＼ ￥5,000キャッシュバック中💰 ／\n\n為替相場が上がるか下がるか予測するだけの簡単取引👀‼️\n無料のクイックデモで体験しよう🔥\n\n詳細はこちら：https://onl.bz/BRQ1VHP\n\n", ["./assets/images/ask_004.mp4"]]
-    ["/\n「WhoAreU???」でグローバルビデオ通話!!\n\ \n言語も違う国の人と友達になろう\n言語の勉強、友達作りに最適!\n登録一切不要、ワンタッチで始められます♪\n\nios->\nhttps://apps.apple.com/jp/app/id6469033245\nandroid->\nhttps://play.google.com/store/apps/details?id=com.gmail.mmakt122.whoareu\n", ["./assets/images/who4.jpg", "./assets/images/who1.jpg", "./assets/images/who2.jpg", "./assets/images/who3.jpg"]],
+    ["/\n「OneTalk」is random calling app\n\ \nConsultation, sleepless nights, and lonely hearts are filled.\nUnlimited calls.\n\n\ios->\nhttps://apps.apple.com/jp/app/onetalk/id1660444348\nandroid->\nhttps://play.google.com/store/apps/details?id=com.gmail.mmakt122.onetalk\n\n", ["./assets/images/onetalk4.jpg", "./assets/images/onetalk5.jpg", "./assets/images/onetalk6.jpg", "./assets/images/onetalk7.jpg"]],
+    ["/\nGlobal Video Calling with「WhoAreU???」!!\n\ \nMake friends with people from different countries in different languages\n\n\ios->\nhttps://apps.apple.com/jp/app/id6469033245\nandroid->\nhttps://play.google.com/store/apps/details?id=com.gmail.mmakt122.whoareu\n\n", ["./assets/images/who4.jpg", "./assets/images/who1.jpg", "./assets/images/who2.jpg", "./assets/images/who3.jpg"]],
 ]
 # 投稿間隔
 interval = 288
@@ -47,10 +42,10 @@ dummyNumber = 0
 sentenceLength = 0
 maxLength = 140
 
-CONSUMER_KEY = setting.CONSUMER_KEY
-CONSUMER_SECRET = setting.CONSUMER_SECRET
-ACCESS_TOKEN = setting.ACCESS_TOKEN
-ACCESS_TOKEN_SECRET = setting.ACCESS_TOKEN_SECRET
+CONSUMER_KEY = setting.CONSUMER_KEY1
+CONSUMER_SECRET = setting.CONSUMER_SECRET1
+ACCESS_TOKEN = setting.ACCESS_TOKEN1
+ACCESS_TOKEN_SECRET = setting.ACCESS_TOKEN_SECRET1
 
 def main():
     print("-------------------------------TweetBot--------------------------------")
@@ -177,6 +172,8 @@ def make_sentence(resultDf, sentence):
     global dummyNumber, beforeMessage
     i = 0
 
+    print(resultDf)
+
     while True:
         if i == 0:
             message = f'{sentence}'
@@ -208,6 +205,7 @@ def make_sentence(resultDf, sentence):
     # print("beforeMessage = ", beforeMessage)
 
     return message
+
 
 
 # トレンド取得
