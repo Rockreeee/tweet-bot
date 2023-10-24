@@ -18,8 +18,6 @@ import os
 
 
 # カスタムパラメーター===================================
-# 日本のWOEID
-woeid = 23424856 
 # 投稿する文章のリスト
 sentenceList = [
     ["/\n「OneTalk」でランダムな人と通話。\n\ \n相談、眠れない、心の寂しさを埋めます。\n登録不要で通話し放題。\n\nios->\nhttps://apps.apple.com/jp/app/onetalk/id1660444348\nandroid->\nhttps://play.google.com/store/apps/details?id=com.gmail.mmakt122.onetalk\n\n", ["./assets/images/onetalk4.jpg", "./assets/images/onetalk5.jpg", "./assets/images/onetalk6.jpg", "./assets/images/onetalk7.jpg"]],
@@ -45,12 +43,15 @@ beforeMessage = []
 dummyNumber = 0
 # 文章の長さ計測
 sentenceLength = 0
+# tweetの最大の長さ
 maxLength = 140
+
 
 CONSUMER_KEY = setting.CONSUMER_KEY
 CONSUMER_SECRET = setting.CONSUMER_SECRET
 ACCESS_TOKEN = setting.ACCESS_TOKEN
 ACCESS_TOKEN_SECRET = setting.ACCESS_TOKEN_SECRET
+
 
 def main():
     print("-------------------------------TweetBot--------------------------------")
@@ -71,7 +72,9 @@ def main():
     print("   |   \/     |    //   |         |    \/   |/       |         \|/     ")
     print("-------------------------------TweetBot--------------------------------")
 
+
     global dummyNumber, sentenceLength, randomSentence
+
 
     # Twitterオブジェクトの生成
     auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
@@ -79,6 +82,7 @@ def main():
     api = tweepy.API(auth)
 
     client = tweepy.Client(consumer_key=CONSUMER_KEY, consumer_secret=CONSUMER_SECRET, access_token=ACCESS_TOKEN, access_token_secret=ACCESS_TOKEN_SECRET)
+
 
     # 画像をアップロード
     mediaIdList = []
@@ -90,6 +94,7 @@ def main():
             tempList.append(media.media_id)
 
         mediaIdList.append(tempList)
+
 
     # Chrome Driver 起動
     start_chrome_driver()
@@ -123,7 +128,18 @@ def main():
         
         try:
             # ツイートを投稿する
-            client.create_tweet(text=message, media_ids=randomMediaIdList)
+            tweet = api.update_status(status=message, media_ids=mediaIdList)
+            # client.create_tweet(text=message, media_ids=randomMediaIdList)
+
+            # ID取得
+            tweet_id = tweet[0].id
+            print("tweet_idは", tweet_id)
+
+            # リプライ
+            # client.re
+            # client.create_tweet(text=message, media_ids=randomMediaIdList)
+            # api.update_status(status=reply_text, in_reply_to_status_id=tweet_id)
+
             print(f'ツイートしました。\n↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓\n{message}\n↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑\n======================================================', flush=True)
         
         except tweepy.errors.Forbidden:
