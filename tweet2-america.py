@@ -247,7 +247,7 @@ def get_trends():
 
     # トレンド1位から10位まで取得
     trends = []
-    for i in range(30):
+    for i in range(10):
         search_string = i + 1
         index = elements_list.index(str(search_string))
         trends.append(elements_list[index + 6])

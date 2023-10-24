@@ -129,16 +129,13 @@ def main():
         try:
             # ツイートを投稿する
             tweet = api.update_status(status=message, media_ids=mediaIdList)
-            # client.create_tweet(text=message, media_ids=randomMediaIdList)
 
             # ID取得
             tweet_id = tweet[0].id
             print("tweet_idは", tweet_id)
 
             # リプライ
-            # client.re
-            # client.create_tweet(text=message, media_ids=randomMediaIdList)
-            # api.update_status(status=reply_text, in_reply_to_status_id=tweet_id)
+            api.update_status(status=reply_text, in_reply_to_status_id=tweet_id)
 
             print(f'ツイートしました。\n↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓\n{message}\n↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑\n======================================================', flush=True)
         
@@ -265,7 +262,7 @@ def get_trends():
 
     # トレンド1位から10位まで取得
     trends = []
-    for i in range(30):
+    for i in range(10):
         search_string = i + 1
         index = elements_list.index(str(search_string))
         trends.append(elements_list[index + 6])
