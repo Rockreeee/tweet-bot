@@ -20,8 +20,8 @@ import os
 # カスタムパラメーター===================================
 # 投稿する文章のリスト
 tweetList = [
-    ["/\n「OneTalk」is random calling app\n\ \nConsultation, sleepless nights, and lonely hearts are filled.\nUnlimited calls.\n\n", ["./assets/images/onetalk4.jpg", "./assets/images/onetalk5.jpg", "./assets/images/onetalk6.jpg", "./assets/images/onetalk7.jpg"], ["iphone→\nhttps://apps.apple.com/jp/app/onetalk/id1660444348", "Android→\nhttps://play.google.com/store/apps/details?id=com.gmail.mmakt122.onetalk"]],
-    ["/\nGlobal Video Calling with「WhoAreU???」!!\n\ \nMake friends with people from different countries in different languages\n\n", ["./assets/images/who4.jpg", "./assets/images/who1.jpg", "./assets/images/who2.jpg", "./assets/images/who3.jpg"], ["iphone→\nhttps://apps.apple.com/jp/app/id6469033245", "Android→\nhttps://play.google.com/store/apps/details?id=com.gmail.mmakt122.whoareu"]],
+    ["/\n「OneTalk」is random calling app\n\ \n\n", ["./assets/images/onetalk4.jpg", "./assets/images/onetalk5.jpg", "./assets/images/onetalk6.jpg", "./assets/images/onetalk7.jpg"], ["iphone→\nhttps://apps.apple.com/jp/app/onetalk/id1660444348", "Android→\nhttps://play.google.com/store/apps/details?id=com.gmail.mmakt122.onetalk"]],
+    ["/\nGlobal Video Calling with「WhoAreU???」!!\n\ \n\n", ["./assets/images/who4.jpg", "./assets/images/who1.jpg", "./assets/images/who2.jpg", "./assets/images/who3.jpg"], ["iphone→\nhttps://apps.apple.com/jp/app/id6469033245", "Android→\nhttps://play.google.com/store/apps/details?id=com.gmail.mmakt122.whoareu"]],
 ]
 # 投稿間隔
 interval = 288
