@@ -197,7 +197,7 @@ def make_sentence(resultDf, sentence):
         message +=  f'\n#{resultDf[i]}'
         i += 1
         # 次ループで140文字を超えたら終了(URLは22文字になる)
-        if sentenceLength + (len(message) - len(sentence)) + len(f'\n#{resultDf[i]}') > maxLength:
+        if sentenceLength + (len(message) - len(sentence)) + len(f'\n#{resultDf[i]}') > maxLength or len(resultDf) <= i + 1:
             break
 
     # beforeMessageが増えすぎないように(最大保持数99)
@@ -264,9 +264,12 @@ def get_trends():
     # トレンド1位から10位まで取得
     trends = []
     for i in range(30):
-        search_string = i + 1
-        index = elements_list.index(str(search_string))
-        trends.append(elements_list[index + 6])
+        try:
+            search_string = i + 1
+            index = elements_list.index(str(search_string))
+            trends.append(elements_list[index + 6])
+        except ValueError:
+            print("ValueError")
 
     # print(trends)
 
