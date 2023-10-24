@@ -19,12 +19,12 @@ import os
 
 # カスタムパラメーター===================================
 # 投稿する文章のリスト
-sentenceList = [
-    ["/\n「OneTalk」でランダムな人と通話。\n\ \n相談、眠れない、心の寂しさを埋めます。\n登録不要で通話し放題。\n\nios->\nhttps://apps.apple.com/jp/app/onetalk/id1660444348\nandroid->\nhttps://play.google.com/store/apps/details?id=com.gmail.mmakt122.onetalk\n\n", ["./assets/images/onetalk4.jpg", "./assets/images/onetalk5.jpg", "./assets/images/onetalk6.jpg", "./assets/images/onetalk7.jpg"]],
+tweetList = [
+    ["/\n「OneTalk」でランダムな人と通話。\n\ \n相談、眠れない、心の寂しさを埋めます。\n登録不要で通話し放題。\n\n", ["./assets/images/onetalk4.jpg", "./assets/images/onetalk5.jpg", "./assets/images/onetalk6.jpg", "./assets/images/onetalk7.jpg"], ["iphoneの方はこちらから→\nhttps://apps.apple.com/jp/app/onetalk/id1660444348", "Androidの方はこちらから→\nhttps://play.google.com/store/apps/details?id=com.gmail.mmakt122.onetalk"]],
     # ["/\n「インチキルーレット」で確率は思いのまま!!\n\ \nルーレットで当たるものを操作できる!?\n当てたい項目を100%当てろ!!\n\n\nhttps://apps.apple.com/jp/app/%E3%82%A4%E3%83%B3%E3%83%81%E3%82%AD%E3%83%AB%E3%83%BC%E3%83%AC%E3%83%83%E3%83%88/id1666018138\n\n", ["./assets/images/roulette1.jpg", "./assets/images/roulette2.jpg", "./assets/images/roulette3.jpg"]],
     # ["/\n「早押しクイズで暗記」で楽しく暗記!!\n\ \n単語帳はもう買わなくていい!\nみんなで単語帳を作ろう♪\n資格勉強、暗記に最適('ω')\n\n\nhttps://rockreeee.github.io/MemorizationByQuiz-web-page/\n\n", ["./assets/images/study1.jpg", "./assets/images/study2.jpg", "./assets/images/study3.jpg", "./assets/images/study4.jpg"]],
     # ["＼ ￥5,000キャッシュバック中💰 ／\n\n為替相場が上がるか下がるか予測するだけの簡単取引👀‼️\n無料のクイックデモで体験しよう🔥\n\n詳細はこちら：https://onl.bz/BRQ1VHP\n\n", ["./assets/images/ask_004.mp4"]]
-    ["/\n「WhoAreU???」でグローバルビデオ通話!!\n\ \n言語も違う国の人と友達になろう\n言語の勉強、友達作りに最適!\n登録一切不要、ワンタッチで始められます♪\n\nios->\nhttps://apps.apple.com/jp/app/id6469033245\nandroid->\nhttps://play.google.com/store/apps/details?id=com.gmail.mmakt122.whoareu\n", ["./assets/images/who4.jpg", "./assets/images/who1.jpg", "./assets/images/who2.jpg", "./assets/images/who3.jpg"]],
+    ["/\n「WhoAreU???」でグローバルビデオ通話!!\n\ \n言語も違う国の人と友達になろう\n言語の勉強、友達作りに最適!\n登録一切不要、ワンタッチで始められます♪\n\n", ["./assets/images/who4.jpg", "./assets/images/who1.jpg", "./assets/images/who2.jpg", "./assets/images/who3.jpg"], ["iphoneの方はこちらから→\nhttps://apps.apple.com/jp/app/id6469033245", "Androidの方はこちらから→\nhttps://play.google.com/store/apps/details?id=com.gmail.mmakt122.whoareu"]],
 ]
 # 投稿間隔
 interval = 288
@@ -80,13 +80,11 @@ def main():
     auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
     auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
     api = tweepy.API(auth)
-
     client = tweepy.Client(consumer_key=CONSUMER_KEY, consumer_secret=CONSUMER_SECRET, access_token=ACCESS_TOKEN, access_token_secret=ACCESS_TOKEN_SECRET)
-
 
     # 画像をアップロード
     mediaIdList = []
-    for images in sentenceList:
+    for images in tweetList:
         tempList = []
         for image in images[1]:
             filename = image
@@ -115,9 +113,13 @@ def main():
             resultDf.append(item.replace("#", ''))
         
         # 文章と画像決定
-        randomNum = random.randrange(0, len(sentenceList))
-        randomSentence = sentenceList[randomNum][0]
+        randomNum = random.randrange(0, len(tweetList))
+        randomSentence = tweetList[randomNum][0]
         randomMediaIdList = mediaIdList[randomNum]
+
+        # ios版とandroid版の文
+        replySentence1 = tweetList[randomNum][2][0]
+        replySentence2 = tweetList[randomNum][2][1]
         
         # 文章の長さ取得
         sentenceLength = count_length_of_sentence(randomSentence)
@@ -128,16 +130,21 @@ def main():
         
         try:
             # ツイートを投稿する
-            tweet = api.update_status(status=message, media_ids=mediaIdList)
+            tweet = client.create_tweet(text=message, media_ids=randomMediaIdList)
+
+            print(f'ツイートしました。\n↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓\n{message}\n↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑', flush=True)
 
             # ID取得
-            tweet_id = tweet[0].id
+            tweet_id = tweet.data['id']
             print("tweet_idは", tweet_id)
 
             # リプライ
-            api.update_status(status=reply_text, in_reply_to_status_id=tweet_id)
+            client.create_tweet(text=replySentence1, in_reply_to_tweet_id=tweet_id)
+            print(f'リプライしました。\n↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓\n{replySentence1}\n↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑', flush=True)
+            client.create_tweet(text=replySentence2, in_reply_to_tweet_id=tweet_id)
+            print(f'リプライしました。\n↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓\n{replySentence2}\n↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑', flush=True)
+            print('======================================================')
 
-            print(f'ツイートしました。\n↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓\n{message}\n↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑\n======================================================', flush=True)
         
         except tweepy.errors.Forbidden:
             print('前回メッセージと同じなので今回はツイートできませんでした。', flush=True)

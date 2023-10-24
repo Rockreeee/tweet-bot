@@ -19,9 +19,9 @@ import os
 
 # カスタムパラメーター===================================
 # 投稿する文章のリスト
-sentenceList = [
-    ["/\n「OneTalk」is random calling app\n\ \nConsultation, sleepless nights, and lonely hearts are filled.\nUnlimited calls.\n\n\ios->\nhttps://apps.apple.com/jp/app/onetalk/id1660444348\nandroid->\nhttps://play.google.com/store/apps/details?id=com.gmail.mmakt122.onetalk\n\n", ["./assets/images/onetalk4.jpg", "./assets/images/onetalk5.jpg", "./assets/images/onetalk6.jpg", "./assets/images/onetalk7.jpg"]],
-    ["/\nGlobal Video Calling with「WhoAreU???」!!\n\ \nMake friends with people from different countries in different languages\n\n\ios->\nhttps://apps.apple.com/jp/app/id6469033245\nandroid->\nhttps://play.google.com/store/apps/details?id=com.gmail.mmakt122.whoareu\n\n", ["./assets/images/who4.jpg", "./assets/images/who1.jpg", "./assets/images/who2.jpg", "./assets/images/who3.jpg"]],
+tweetList = [
+    ["/\n「OneTalk」is random calling app\n\ \nConsultation, sleepless nights, and lonely hearts are filled.\nUnlimited calls.\n\n", ["./assets/images/onetalk4.jpg", "./assets/images/onetalk5.jpg", "./assets/images/onetalk6.jpg", "./assets/images/onetalk7.jpg"], ["iphone→\nhttps://apps.apple.com/jp/app/onetalk/id1660444348", "Android→\nhttps://play.google.com/store/apps/details?id=com.gmail.mmakt122.onetalk"]],
+    ["/\nGlobal Video Calling with「WhoAreU???」!!\n\ \nMake friends with people from different countries in different languages\n\n", ["./assets/images/who4.jpg", "./assets/images/who1.jpg", "./assets/images/who2.jpg", "./assets/images/who3.jpg"], ["iphone→\nhttps://apps.apple.com/jp/app/id6469033245", "Android→\nhttps://play.google.com/store/apps/details?id=com.gmail.mmakt122.whoareu"]],
 ]
 # 投稿間隔
 interval = 288
@@ -66,18 +66,19 @@ def main():
     print("   |   \/     |    //   |         |    \/   |/       |         \|/     ")
     print("-------------------------------TweetBot--------------------------------")
 
+
     global dummyNumber, sentenceLength, randomSentence
+
 
     # Twitterオブジェクトの生成
     auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
     auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
     api = tweepy.API(auth)
-
     client = tweepy.Client(consumer_key=CONSUMER_KEY, consumer_secret=CONSUMER_SECRET, access_token=ACCESS_TOKEN, access_token_secret=ACCESS_TOKEN_SECRET)
 
     # 画像をアップロード
     mediaIdList = []
-    for images in sentenceList:
+    for images in tweetList:
         tempList = []
         for image in images[1]:
             filename = image
@@ -85,6 +86,7 @@ def main():
             tempList.append(media.media_id)
 
         mediaIdList.append(tempList)
+
 
     # Chrome Driver 起動
     start_chrome_driver()
@@ -105,9 +107,13 @@ def main():
             resultDf.append(item.replace("#", ''))
         
         # 文章と画像決定
-        randomNum = random.randrange(0, len(sentenceList))
-        randomSentence = sentenceList[randomNum][0]
+        randomNum = random.randrange(0, len(tweetList))
+        randomSentence = tweetList[randomNum][0]
         randomMediaIdList = mediaIdList[randomNum]
+
+        # ios版とandroid版の文
+        replySentence1 = tweetList[randomNum][2][0]
+        replySentence2 = tweetList[randomNum][2][1]
         
         # 文章の長さ取得
         sentenceLength = count_length_of_sentence(randomSentence)
@@ -118,9 +124,22 @@ def main():
         
         try:
             # ツイートを投稿する
-            client.create_tweet(text=message, media_ids=randomMediaIdList)
-            print(f'ツイートしました。\n↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓\n{message}\n↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑\n======================================================', flush=True)
-        
+            tweet = client.create_tweet(text=message, media_ids=randomMediaIdList)
+
+            print(f'ツイートしました。\n↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓\n{message}\n↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑', flush=True)
+            
+            # ID取得
+            tweet_id = tweet.data['id']
+            print("tweet_idは", tweet_id)
+
+            # リプライ
+            client.create_tweet(text=replySentence1, in_reply_to_tweet_id=tweet_id)
+            print(f'リプライしました。\n↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓\n{replySentence1}\n↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑', flush=True)
+            client.create_tweet(text=replySentence2, in_reply_to_tweet_id=tweet_id)
+            print(f'リプライしました。\n↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓\n{replySentence2}\n↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑', flush=True)
+            print('======================================================')
+
+
         except tweepy.errors.Forbidden:
             print('前回メッセージと同じなので今回はツイートできませんでした。', flush=True)
 
@@ -172,8 +191,6 @@ def make_sentence(resultDf, sentence):
     global dummyNumber, beforeMessage
     i = 0
 
-    print(resultDf)
-
     while True:
         if i == 0:
             message = f'{sentence}'
@@ -205,7 +222,6 @@ def make_sentence(resultDf, sentence):
     # print("beforeMessage = ", beforeMessage)
 
     return message
-
 
 
 # トレンド取得
