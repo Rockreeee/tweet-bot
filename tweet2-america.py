@@ -147,10 +147,6 @@ def main():
             print('サーバーエラーです。0', flush=True)
             time.sleep(60)
 
-        except requests.exceptions.ConnectionError:
-            print('サーバーエラーです。1', flush=True)
-            time.sleep(60)
-
         except tweepy.errors.TooManyRequests:
             print('サーバーエラーです。2', flush=True)
             time.sleep(60)
